@@ -32,8 +32,6 @@ export default function RefCompleteClient() {
   }, [referrer, router])
 
   return (
-    <main className="min-h-screen flex justify-center items-center text-white">
-      <p>Setting up your referral... Please wait</p>
-    </main>
+    <p className="text-white">Setting up your referral... Please wait</p>
   )
 }

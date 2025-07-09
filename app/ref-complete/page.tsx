@@ -1,10 +1,14 @@
+import dynamic from "next/dynamic"
 import { Suspense } from "react"
-import RefCompleteClient from "./RefCompleteClient"
+
+const RefCompleteClient = dynamic(() => import("./RefCompleteClient"), { ssr: false })
 
 export default function RefCompletePage() {
   return (
-    <Suspense fallback={<div className="text-white text-center p-8">Loading referral setup...</div>}>
-      <RefCompleteClient />
-    </Suspense>
+    <main className="min-h-screen flex justify-center items-center text-white">
+      <Suspense fallback={<p>Loading...</p>}>
+        <RefCompleteClient />
+      </Suspense>
+    </main>
   )
 }
