@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { clerkClient } from "@clerk/clerk-sdk-node";
-import Stripe from "stripe";
+import Stripe from "stripe"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2022-11-15",
-});
+  // ✅ REMOVE this line entirely:
+  // apiVersion: "2022-11-15",
+})
+
 
 const PLAN_TOKENS = {
   starter: 8,
