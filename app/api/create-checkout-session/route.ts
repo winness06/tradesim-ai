@@ -41,8 +41,9 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/?upgrade_success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/upgrade`,
+      success_url: "https://chartchamp.com.au/?upgrade_success=true",
+      cancel_url: "https://chartchamp.com.au/",
+
       metadata: { userId, referralCode, plan },
     });
 

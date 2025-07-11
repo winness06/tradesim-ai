@@ -6,6 +6,8 @@ import CandleChart from "@/components/CandleChart"
 import { CandlestickData, Time } from "lightweight-charts"
 import { generateOneMinCandles, aggregateCandles } from "@/lib/generateCandles"
 import { evaluateTrade } from "@/lib/evaluateTrade"
+import { useSearchParams } from "next/navigation"
+
 
 export default function Home() {
   const [entryPrice, setEntryPrice] = useState("")
@@ -27,6 +29,16 @@ export default function Home() {
 
   const [allCandles, setAllCandles] = useState<CandlestickData<Time>[]>([])
   const [candles, setCandles] = useState<CandlestickData<Time>[]>([])
+const params = useSearchParams()
+const [showBanner, setShowBanner] = useState(false)
+
+useEffect(() => {
+  if (params.get("upgrade_success") === "true") {
+    setShowBanner(true)
+    const timeout = setTimeout(() => setShowBanner(false), 5000)
+    return () => clearTimeout(timeout)
+  }
+}, [params])
 
   const DAILY_GOAL = 3
   const sleep = (ms: number) => new Promise(res => setTimeout(res, ms))
@@ -170,8 +182,16 @@ export default function Home() {
   const progressPercent = Math.min((dailySims / DAILY_GOAL) * 100, 100)
 
   return (
+  
+    
     <main className="min-h-screen bg-gray-900 text-white flex flex-col">
       <SignedIn>
+        {showBanner && (
+  <div className="bg-green-600 text-white text-center py-2 text-sm">
+    ✅ Upgrade successful! Enjoy unlimited simulations.
+  </div>
+)}
+
         <header className="p-4 border-b border-gray-700 flex justify-between items-center">
           <h1 className="text-2xl font-bold">TradeSim AI Coach</h1>
           <UserButton />
