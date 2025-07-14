@@ -3,15 +3,17 @@ import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+   // Add if not already set for safety
 });
 
-const PRICING = {
-  starter: { amount: 799, label: "TradeSim Starter (8 Daily Sims)" },
-  pro: { amount: 2499, label: "TradeSim Pro (30 Daily Sims)" },
-  entire: { amount: 5999, label: "TradeSim Entire Flex (Unlimited Sims)" },
+// Your real Stripe price IDs (replace these with actual IDs from your Stripe dashboard)
+const SUBSCRIPTION_PRICE_IDS = {
+  starter: { priceId: "price_1RkjigAoEEs1A8KI3OZBk2Ec", label: "TradeSim Starter (8 Daily Sims)" },
+  pro: { priceId: "price_1RkjjEAoEEs1A8KIKBNOYRtG", label: "TradeSim Pro (30 Daily Sims)" },
+  entire: { priceId: "price_1RkjjiAoEEs1A8KIAAiJ55xj", label: "TradeSim Entire Flex (Unlimited Sims)" },
 } as const;
 
-type PlanType = keyof typeof PRICING;
+type PlanType = keyof typeof SUBSCRIPTION_PRICE_IDS;
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -23,27 +25,22 @@ export async function POST(req: NextRequest) {
   const plan = body.plan as PlanType;
   const referralCode = body.referralCode || "";
 
-  if (!plan || !PRICING[plan]) {
+  if (!plan || !SUBSCRIPTION_PRICE_IDS[plan]) {
     return NextResponse.json({ error: "Invalid plan selected." }, { status: 400 });
   }
 
   try {
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
+      mode: "subscription", // ✅ CHANGED
       payment_method_types: ["card"],
       line_items: [
         {
-          price_data: {
-            currency: "usd",
-            product_data: { name: PRICING[plan].label },
-            unit_amount: PRICING[plan].amount,
-          },
+          price: SUBSCRIPTION_PRICE_IDS[plan].priceId, // ✅ Use Stripe Price ID
           quantity: 1,
         },
       ],
       success_url: "https://chartchamp.com.au/?upgrade_success=true",
       cancel_url: "https://chartchamp.com.au/",
-
       metadata: { userId, referralCode, plan },
     });
 
