@@ -1,8 +1,8 @@
 // app/page.tsx
-import dynamic from "next/dynamic"
+import dynamic from "next/dynamic";
 
-const HomeClient = dynamic(() => import("./Homeclient"), { ssr: false })
+const Home = dynamic(() => import("@/components/HomeClient"), { ssr: false });
 
 export default function Page() {
-  return <HomeClient />
+  return <Home />;
 }
