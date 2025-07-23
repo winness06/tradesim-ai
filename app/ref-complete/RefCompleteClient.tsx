@@ -31,7 +31,5 @@ export default function RefCompleteClient() {
     applyReferral()
   }, [referrer, router])
 
-  return (
-    <p className="text-white">Setting up your referral... Please wait</p>
-  )
+  return <p className="text-white">Setting up your referral... Please wait</p>
 }
