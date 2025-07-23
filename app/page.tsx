@@ -1,8 +1,9 @@
 import dynamic from "next/dynamic"
 
-// Load the charting interface with SSR disabled
-const Home = dynamic(() => import("@/components/HomeClient"), { ssr: false })
+const HomeClient = dynamic(() => import("@/components/HomeClient"), {
+  ssr: false,
+})
 
 export default function Page() {
-  return <Home />
+  return <HomeClient />
 }
