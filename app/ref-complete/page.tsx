@@ -1,39 +1,16 @@
-"use client"
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 
-import { useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+const RefCompleteClient = dynamic(() => import('./RefCompleteClient'), {
+  ssr: false,
+})
 
 export default function RefCompletePage() {
-  const params = useSearchParams()
-  const router = useRouter()
-  const referrer = params.get("ref")
-
-  useEffect(() => {
-    const applyReferral = async () => {
-      if (!referrer) {
-        router.push("/")
-        return
-      }
-
-      try {
-        await fetch("/api/apply-referral", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ referrer }),
-        })
-      } catch (err) {
-        console.error("Referral error:", err)
-      }
-
-      router.push("/")
-    }
-
-    applyReferral()
-  }, [referrer, router])
-
   return (
     <main className="min-h-screen flex justify-center items-center text-white">
-      <p>Setting up your referral... Please wait</p>
+      <Suspense fallback={<p>Loading...</p>}>
+        <RefCompleteClient />
+      </Suspense>
     </main>
   )
 }
