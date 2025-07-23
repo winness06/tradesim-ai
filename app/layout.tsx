@@ -1,9 +1,10 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { ClerkProvider, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
-import ClientWrapper from "@/components/ClientWrapper";  // ✅ Correct import
+import ClientWrapper from "@/components/ClientWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,12 +23,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-900 text-white min-h-screen`}>
-          
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-900 text-white min-h-screen`}
+        >
           <header className="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
             <Link href="/" className="text-xl font-bold hover:text-green-400">
               TradeSim AI
@@ -50,7 +54,6 @@ export default function RootLayout({
           </header>
 
           <ClientWrapper>{children}</ClientWrapper>
-          
         </body>
       </html>
     </ClerkProvider>

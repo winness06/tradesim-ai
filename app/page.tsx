@@ -1,10 +1,12 @@
 import { Suspense } from "react";
 import HomeClient from "@/components/HomeClient";
 
-export default function Page() {
+export default function HomePage() {
   return (
-    <Suspense fallback={<div className="text-white p-4">Loading...</div>}>
-      <HomeClient />
-    </Suspense>
+    <main className="min-h-screen">
+      <Suspense fallback={<div>Loading...</div>}>
+        <HomeClient />
+      </Suspense>
+    </main>
   );
 }
