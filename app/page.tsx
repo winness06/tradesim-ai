@@ -1,12 +1,11 @@
-import { Suspense } from "react";
-import HomeClient from "@/components/HomeClient";
+// app/page.tsx
+import dynamic from "next/dynamic";
+
+// Use dynamic import for client-side only
+const HomeClient = dynamic(() => import("@/components/HomeClient"), {
+  ssr: false,
+});
 
 export default function HomePage() {
-  return (
-    <main className="min-h-screen">
-      <Suspense fallback={<div>Loading...</div>}>
-        <HomeClient />
-      </Suspense>
-    </main>
-  );
+  return <HomeClient />;
 }
