@@ -1,7 +1,15 @@
-'use client';
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
-import HomeClient from '@/components/HomeClient';
+// Dynamically import HomeClient (client-side)
+const HomeClient = dynamic(() => import("@/components/HomeClient"), {
+  ssr: false,
+});
 
 export default function Page() {
-  return <HomeClient />;
+  return (
+    <Suspense fallback={<p className="text-white text-center">Loading...</p>}>
+      <HomeClient />
+    </Suspense>
+  );
 }
