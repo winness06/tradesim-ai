@@ -1,8 +1,10 @@
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
+'use client';
+
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 
 // Dynamically import HomeClient (client-side)
-const HomeClient = dynamic(() => import("@/components/HomeClient"), {
+const HomeClient = dynamic(() => import('@/components/HomeClient'), {
   ssr: false,
 });
 
