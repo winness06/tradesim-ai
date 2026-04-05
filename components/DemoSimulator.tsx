@@ -22,11 +22,15 @@ export default function DemoSimulator() {
   const [entryPrice, setEntryPrice] = useState('');
   const [takeProfit, setTakeProfit] = useState('');
   const [stopLoss, setStopLoss] = useState('');
-  const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false);
   const [attemptsUsed, setAttemptsUsed] = useState(0);
   const [limitReached, setLimitReached] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // Track submitted values to show lines on chart during/after simulation
+  const [submittedEntry, setSubmittedEntry] = useState<number | null>(null);
+  const [submittedTp, setSubmittedTp] = useState<number | null>(null);
+  const [submittedSl, setSubmittedSl] = useState<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -68,8 +72,12 @@ export default function DemoSimulator() {
       isNaN(sl) ? null : sl,
     );
 
+    // Capture values for chart lines
+    setSubmittedEntry(isNaN(entry) ? null : entry);
+    setSubmittedTp(isNaN(tp) ? null : tp);
+    setSubmittedSl(isNaN(sl) ? null : sl);
+
     setLoading(true);
-    setFeedback('');
 
     // Animate candles forward
     const simCount = SIM_COUNTS[timeframe] ?? 25;
@@ -98,7 +106,6 @@ export default function DemoSimulator() {
       });
 
       const data = await res.json();
-      setFeedback(data.feedback);
 
       if (data.limitReached) {
         setLimitReached(true);
@@ -113,11 +120,22 @@ export default function DemoSimulator() {
       if (newCount >= DEMO_LIMIT) setLimitReached(true);
 
     } catch {
-      setFeedback('Error getting AI feedback. Please try again.');
+      // silently ignore — feedback section is locked in demo
     } finally {
       setLoading(false);
     }
   };
+
+  // Derive chart line values
+  const chartEntry = submittedEntry;
+  const chartTp = submittedTp;
+  const chartSl = submittedSl;
+  const tradeDirection: 'long' | 'short' | 'unknown' =
+    chartEntry != null && chartTp != null
+      ? chartTp > chartEntry ? 'long' : 'short'
+      : chartEntry != null && chartSl != null
+        ? chartSl < chartEntry ? 'long' : 'short'
+        : 'unknown';
 
   // Don't render until client hydration is complete (avoids localStorage mismatch)
   if (!mounted) return (
@@ -179,6 +197,11 @@ export default function DemoSimulator() {
               activeIndicators={new Set<string>()}
               onToggleIndicator={() => {}}
               isDark={true}
+              entryPrice={chartEntry}
+              takeProfit={chartTp}
+              stopLoss={chartSl}
+              tradeDirection={tradeDirection}
+              isDraggable={false}
             />
           )}
         </div>
@@ -197,12 +220,6 @@ export default function DemoSimulator() {
                   Sign up free to unlock unlimited practice, rank tracking, and full AI coaching.
                 </p>
               </div>
-              {feedback && (
-                <div className="w-full p-3 bg-gray-800 border border-green-500/30 rounded-lg text-left">
-                  <p className="text-green-400 text-xs font-semibold mb-1">LAST TRADE FEEDBACK</p>
-                  <p className="text-gray-300 text-xs leading-relaxed">{feedback}</p>
-                </div>
-              )}
               <Link
                 href="/sign-up"
                 className="w-full block text-center bg-green-500 hover:bg-green-400 text-black font-black py-3 rounded-xl transition transform hover:scale-105"
@@ -257,18 +274,36 @@ export default function DemoSimulator() {
                 {loading ? 'Simulating...' : `Simulate Trade (${DEMO_LIMIT - attemptsUsed} left)`}
               </button>
 
-              {feedback && (
-                <div className="p-3 bg-gray-800 border border-green-500/40 rounded-lg">
-                  <p className="text-green-400 text-xs font-semibold mb-1 uppercase tracking-wide">
-                    AI Coach Feedback
-                  </p>
-                  <p className="text-gray-300 text-xs leading-relaxed">{feedback}</p>
+              {/* AI feedback — locked in demo */}
+              {loading || submittedEntry != null ? (
+                <div className="relative rounded-lg overflow-hidden border border-gray-700">
+                  {/* Blurred placeholder content */}
+                  <div className="p-3 bg-gray-800 select-none pointer-events-none">
+                    <p className="text-xs font-semibold mb-1 uppercase tracking-wide text-gray-500">
+                      AI Coach Feedback
+                    </p>
+                    <p className="text-xs leading-relaxed text-gray-600 blur-sm">
+                      Your entry was well-placed but your stop was too tight, giving price no room to breathe. Move your SL below the recent swing low next time for a cleaner 2R setup.
+                    </p>
+                  </div>
+                  {/* Lock overlay */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-gray-900/70 backdrop-blur-[1px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" style={{ color: '#E8313A' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <p className="text-xs font-bold text-white">Sign in to access AI feedback</p>
+                    <Link
+                      href="/sign-in"
+                      className="mt-1 px-3 py-1.5 rounded-lg text-xs font-black text-white transition hover:opacity-90"
+                      style={{ backgroundColor: '#E8313A' }}
+                    >
+                      Sign In →
+                    </Link>
+                  </div>
                 </div>
-              )}
-
-              {!feedback && (
+              ) : (
                 <p className="text-gray-600 text-xs text-center leading-relaxed">
-                  Study the chart, set your levels, and hit Simulate to see what happens and get AI coaching.
+                  Study the chart, set your levels, and hit Simulate to see what happens.
                 </p>
               )}
             </>
