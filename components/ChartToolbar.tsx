@@ -175,12 +175,12 @@ export default function ChartToolbar({
   return (
     <div
       ref={rootRef}
+      className="hidden md:flex"
       style={{
         background: bg,
         border: `1px solid ${border}`,
         borderRadius: '10px',
         padding: '5px 10px',
-        display: 'flex',
         alignItems: 'center',
         gap: '4px',
         flexWrap: 'wrap' as const,

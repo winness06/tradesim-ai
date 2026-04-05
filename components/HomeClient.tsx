@@ -1027,7 +1027,7 @@ export default function HomeClient() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div style={{ background: c.bg, minHeight: '100vh', color: c.text, display: 'flex', flexDirection: 'column' }}>
+    <div className="overflow-x-hidden" style={{ background: c.bg, minHeight: '100vh', color: c.text, display: 'flex', flexDirection: 'column' }}>
 
       {/* Theme selection modal (first visit) */}
       {showThemeModal && <ThemeSelectionModal onSelect={() => setShowThemeModal(false)} />}
@@ -1116,6 +1116,7 @@ export default function HomeClient() {
                 >↺ New Chart</button>
               </div>
               <div className="px-4 pb-4">
+                <div className="overflow-hidden h-[280px] sm:h-[400px]">
                 <CandleChartWrapper
                   candles={candles}
                   timeframe={timeframe}
@@ -1155,6 +1156,7 @@ export default function HomeClient() {
                   onSlChange={handleSlChange}
                   isDraggable={simPhase === 'idle' || simPhase === 'complete'}
                 />
+                </div>
               </div>
             </div>
 
@@ -1306,7 +1308,8 @@ export default function HomeClient() {
                 disabled={!canSimulate}
                 style={{ ...btnRed, width: '100%', padding: '13px', fontSize: '14px', fontWeight: 900,
                   opacity: !canSimulate ? 0.5 : 1,
-                  cursor: !canSimulate ? 'not-allowed' : 'pointer' }}
+                  cursor: !canSimulate ? 'not-allowed' : 'pointer',
+                  minHeight: '44px' }}
                 onMouseEnter={e => { if (canSimulate) e.currentTarget.style.background = RED_DARK; }}
                 onMouseLeave={e => { if (canSimulate) e.currentTarget.style.background = RED; }}
               >

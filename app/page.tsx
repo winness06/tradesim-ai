@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import DemoSimulator from '@/components/DemoSimulator';
+import MobileNav from '@/components/MobileNav';
 
 const ranks = [
   { name: 'Rookie', color: '#9ca3af', min: 0, icon: '🥉' },
@@ -70,7 +71,8 @@ export default function LandingPage() {
           <span className="text-xl font-black tracking-tight text-white">
             Chart<span style={{ color: '#E8313A' }}>Champ</span>
           </span>
-          <div className="flex gap-3 items-center">
+          {/* Desktop nav */}
+          <div className="hidden md:flex gap-3 items-center">
             <Link href="/sign-in" className="text-gray-400 hover:text-white text-sm transition">
               Sign In
             </Link>
@@ -82,6 +84,10 @@ export default function LandingPage() {
               Start Free
             </Link>
           </div>
+          {/* Mobile nav */}
+          <div className="md:hidden">
+            <MobileNav />
+          </div>
         </div>
       </nav>
 
@@ -91,7 +97,7 @@ export default function LandingPage() {
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(232,49,58,0.07)' }} />
 
         <div className="relative max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black leading-tight mb-6 tracking-tight">
             Learn to Trade.
             <br />
             <span style={{ color: '#E8313A' }}>Without Losing Real Money.</span>
@@ -156,7 +162,7 @@ export default function LandingPage() {
             <p className="text-sm uppercase tracking-widest font-semibold mb-3" style={{ color: '#E8313A' }}>How It Works</p>
             <h2 className="text-4xl font-black">Three steps. Real skills.</h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {steps.map((step) => (
               <div key={step.num} className="relative bg-gray-900 border border-gray-800 rounded-2xl p-8 transition" style={{ }} onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(232,49,58,0.4)')} onMouseLeave={e => (e.currentTarget.style.borderColor = '')}>
                 <span className="text-6xl font-black text-gray-800 absolute top-6 right-6 leading-none select-none">
@@ -196,7 +202,7 @@ export default function LandingPage() {
             <p className="text-sm uppercase tracking-widest font-semibold mb-3" style={{ color: '#E8313A' }}>Features</p>
             <h2 className="text-4xl font-black">Everything you need to improve.</h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {features.map((f) => (
               <div key={f.title} className="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-gray-600 transition">
                 <span className="text-3xl mb-4 block">{f.icon}</span>
@@ -218,7 +224,7 @@ export default function LandingPage() {
               Share your referral link. Earn 20% of every payment your friends make — for 3 full months.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
             {[
               { value: '20%', label: 'Commission Rate', sub: 'On every payment your referrals make' },
               { value: '3 Months', label: 'Commission Duration', sub: 'Per referred friend, not just the first payment' },
@@ -250,7 +256,7 @@ export default function LandingPage() {
             <p className="text-sm uppercase tracking-widest font-semibold mb-3" style={{ color: '#E8313A' }}>Pricing</p>
             <h2 className="text-4xl font-black">Start free. Upgrade when ready.</h2>
           </div>
-          <div className="grid md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {/* Free */}
             <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
               <h3 className="font-bold text-lg mb-1">Free</h3>
