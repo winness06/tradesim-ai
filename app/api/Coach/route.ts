@@ -14,26 +14,26 @@ You are an AI Trading Coach. A user submitted this trade:
 Provide short, critical but motivating feedback. Suggest improvements or praise good decisions.
 `
 
-  const openAiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      "x-api-key": process.env.ANTHROPIC_API_KEY!,
+      "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "gpt-4o",
+      model: "claude-haiku-4-5",
+      max_tokens: 1000,
+      system: `You are an expert trading coach answering a follow-up question about a specific trade the user just took. You have access to the exact trade details in the conversation context (entry, TP, SL, result). You must reference the EXACT price levels from that trade in your answers — never give generic advice. Be direct, specific, and under 150 words per response. Every sentence must connect back to their specific trade details.`,
       messages: [
-        { role: "system", content: "You are a friendly but honest trading mentor." },
         { role: "user", content: prompt },
       ],
-      max_tokens: 150,
     }),
   })
 
-  const data = await openAiRes.json()
-  console.log(data) // ✅ This will print the full AI response in your terminal
+  const data = await res.json()
 
-  const message = data.choices?.[0]?.message?.content || "No AI feedback generated."
+  const message = data.content?.[0]?.text || "No AI feedback generated."
 
   return NextResponse.json({ feedback: message })
 }

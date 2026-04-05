@@ -15,14 +15,18 @@ export async function GET(req: NextRequest) {
 
     const meta = user.privateMetadata || {}
     const subscriptionActive = Boolean(meta.subscriptionActive)
+    const userPlan = String(meta.userPlan || "free")
     let tokens = Number(meta.currentSimTokens) || 0
     let lastReset = String(meta.lastResetDate || "")
 
-    const maxDaily = 10
+    const PLAN_DAILY: Record<string, number> = {
+      free: 3, starter: 15, pro: 50, elite: 9999,
+    }
+    const maxDaily = PLAN_DAILY[userPlan] ?? 3
     const today = new Date().toISOString().slice(0, 10)
 
     if (subscriptionActive && lastReset !== today) {
-      tokens += maxDaily
+      tokens = maxDaily
       lastReset = today
 
       await clerkClient.users.updateUserMetadata(userId, {
@@ -37,6 +41,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       tokens,
       subscriptionActive,
+      plan: userPlan,
     })
   } catch (err) {
     console.error("SERVER ERROR in get-tokens route:", err)

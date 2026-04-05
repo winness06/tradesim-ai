@@ -9,9 +9,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 
 const PLAN_TOKENS = {
-  starter: 8,
-  pro: 30,
-  entire: 9999,
+  starter: 15,
+  pro: 50,
+  elite: 9999,
 } as const;
 
 type PlanType = keyof typeof PLAN_TOKENS;
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       await clerkClient.users.updateUserMetadata(userId, {
         privateMetadata: {
           ...meta,
-          subscriptionActive: plan !== "starter",
+          subscriptionActive: true,
           currentSimTokens: PLAN_TOKENS[plan],
           lastResetDate: new Date().toISOString().slice(0, 10),
           userPlan: plan,
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
           const refUser = await clerkClient.users.getUser(referralCode);
           const refMeta = refUser.privateMetadata || {};
 
-          const commission = (amountCents * 0.1) / 100; // 10% of total in USD
+          const commission = (amountCents * 0.2) / 100; // 20% of total in USD
 
           await clerkClient.users.updateUserMetadata(referralCode, {
             privateMetadata: {

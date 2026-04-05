@@ -1,21 +1,9 @@
-"use client"
-
-import { SignUp } from "@clerk/nextjs"
-import { useSearchParams } from "next/navigation"
+import { SignUp } from "@clerk/nextjs";
 
 export default function SignUpPage() {
-  const params = useSearchParams()
-  const referrer = params.get("ref")
-
   return (
-    <main className="min-h-screen flex justify-center items-center">
-      <SignUp
-  path="/sign-up"
-  routing="path"
-  fallbackRedirectUrl={`/ref-complete?ref=${referrer || ""}`}
-/>
-
-    </main>
-  )
+    <div className="min-h-screen flex items-center justify-center bg-gray-950">
+      <SignUp />
+    </div>
+  );
 }
-

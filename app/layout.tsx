@@ -1,10 +1,9 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { ClerkProvider, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
+import { ThemeProvider } from "@/context/ThemeContext";
 import "./globals.css";
-import ClientWrapper from "@/components/ClientWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +16,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TradeSim AI",
-  description: "Test your trading skills with AI coaching.",
+  title: "ChartChamp — AI Trading Simulator | Learn to Trade Risk-Free",
+  description: "Practice trading with AI-generated charts and instant AI coaching. Build real trading skills risk-free. Track your rank from Rookie to Master.",
+  keywords: ["trading simulator", "AI trading coach", "learn to trade", "trading practice", "paper trading", "chart analysis", "technical analysis"],
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: "ChartChamp — AI Trading Simulator",
+    description: "Practice trading with AI-generated charts and instant AI coaching. Build real skills risk-free.",
+    url: "https://chartchamp.com.au",
+    siteName: "ChartChamp",
+    type: "website",
+    images: [{ url: "https://chartchamp.com.au/og-image.png", width: 1200, height: 630, alt: "ChartChamp Trading Simulator" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ChartChamp — AI Trading Simulator",
+    description: "Practice trading with AI coaching. Build real skills risk-free.",
+    images: ["https://chartchamp.com.au/og-image.png"],
+  },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -27,35 +46,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-    >
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-900 text-white min-h-screen`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
         >
-          <header className="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
-            <Link href="/" className="text-xl font-bold hover:text-green-400">
-              TradeSim AI
-            </Link>
-
-            <nav className="space-x-4">
-              <Link href="/" className="hover:text-green-400">Home</Link>
-              <Link href="/upgrade" className="hover:text-green-400">Upgrade</Link>
-              <Link href="/referrals" className="hover:text-green-400">Referrals</Link>
-            </nav>
-
-            <div>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-              <SignedOut>
-                <Link href="/sign-in" className="text-blue-500 ml-4">Sign In</Link>
-              </SignedOut>
-            </div>
-          </header>
-
-          <ClientWrapper>{children}</ClientWrapper>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

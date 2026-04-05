@@ -8,9 +8,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 // Your real Stripe price IDs (replace these with actual IDs from your Stripe dashboard)
 const SUBSCRIPTION_PRICE_IDS = {
-  starter: { priceId: "price_1RkjigAoEEs1A8KI3OZBk2Ec", label: "TradeSim Starter (8 Daily Sims)" },
-  pro: { priceId: "price_1RkjjEAoEEs1A8KIKBNOYRtG", label: "TradeSim Pro (30 Daily Sims)" },
-  entire: { priceId: "price_1RkjjiAoEEs1A8KIAAiJ55xj", label: "TradeSim Entire Flex (Unlimited Sims)" },
+  starter: { priceId: "price_1RkjigAoEEs1A8KI3OZBk2Ec", label: "ChartChamp Starter (15 Daily Sims)" },
+  pro: { priceId: "price_1RkjjEAoEEs1A8KIKBNOYRtG", label: "ChartChamp Pro (50 Daily Sims)" },
+  elite: { priceId: "price_1RkjjiAoEEs1A8KIAAiJ55xj", label: "ChartChamp Elite (Unlimited Sims)" },
 } as const;
 
 type PlanType = keyof typeof SUBSCRIPTION_PRICE_IDS;
