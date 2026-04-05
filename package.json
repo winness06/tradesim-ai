@@ -12,7 +12,7 @@
     "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/nextjs": "^6.23.0",
     "lightweight-charts": "^4.2.3",
-    "next": "15.3.4",
+    "next": "15.3.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "stripe": "^18.3.0"
