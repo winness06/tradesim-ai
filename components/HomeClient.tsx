@@ -976,19 +976,21 @@ export default function HomeClient() {
   const card = {
     background: c.card,
     border: `1px solid ${c.cardBorder}`,
-    borderRadius: '12px',
+    borderRadius: '14px',
     padding: '24px',
+    boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
   };
 
   const inputStyle = {
     width: '100%',
-    padding: '10px 12px',
+    padding: '11px 13px',
     background: c.inputBg,
     border: `1px solid ${c.inputBorder}`,
-    borderRadius: '8px',
+    borderRadius: '10px',
     color: c.text,
     fontSize: '14px',
     outline: 'none',
+    transition: 'border-color 0.15s',
   };
 
   const labelStyle = {
@@ -997,20 +999,21 @@ export default function HomeClient() {
     fontWeight: 700,
     color: c.textMuted,
     textTransform: 'uppercase' as const,
-    letterSpacing: '0.08em',
-    marginBottom: '4px',
+    letterSpacing: '0.1em',
+    marginBottom: '5px',
   };
 
   const btnRed = {
     background: RED,
     color: 'white',
-    fontWeight: 700,
+    fontWeight: 800,
     borderRadius: '10px',
     padding: '11px 20px',
     border: 'none',
     cursor: 'pointer',
     fontSize: '14px',
-    transition: 'background 0.15s',
+    transition: 'all 0.15s',
+    boxShadow: `0 0 20px ${RED}44`,
   };
 
   const btnOutline = {
@@ -1019,7 +1022,7 @@ export default function HomeClient() {
     fontWeight: 700,
     borderRadius: '10px',
     padding: '10px 20px',
-    border: `1px solid ${RED}`,
+    border: `1px solid ${RED}66`,
     cursor: 'pointer',
     fontSize: '14px',
     transition: 'all 0.15s',
@@ -1063,7 +1066,7 @@ export default function HomeClient() {
 
       {/* ── Tab bar ─────────────────────────────────────────────────────────── */}
       <nav style={{ background: c.tabBg, borderBottom: `1px solid ${c.tabBorder}` }}>
-        <div className="max-w-6xl mx-auto px-4 flex overflow-x-auto">
+        <div className="max-w-6xl mx-auto px-4 flex overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
           {TABS.map((tab) => (
             <button
               key={tab.id}
@@ -1071,10 +1074,10 @@ export default function HomeClient() {
                 setActiveTab(tab.id);
                 if (tab.id === 'coach') setCoachNotification(false);
               }}
-              className="px-4 py-3.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors"
+              className="px-4 py-4 text-xs font-bold whitespace-nowrap border-b-2 transition-all duration-200"
               style={activeTab === tab.id
-                ? { borderColor: RED, color: RED }
-                : { borderColor: 'transparent', color: c.textMuted }}
+                ? { borderColor: RED, color: RED, letterSpacing: '0.02em' }
+                : { borderColor: 'transparent', color: c.textMuted, letterSpacing: '0.02em' }}
             >
               <span style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
                 {tab.label}
@@ -1099,7 +1102,7 @@ export default function HomeClient() {
           <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6">
 
             {/* Chart — always dark */}
-            <div style={{ background: '#1a2332', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}>
+            <div style={{ background: '#0d1220', borderRadius: '14px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', border: '1px solid #1a2030' }}>
               <div className="px-4 pt-3 pb-2 flex items-center justify-between flex-wrap gap-2">
                 <div className="flex gap-1.5 flex-wrap">
                   {['1m','5m','15m','1h','4h','1d'].map(tf => (

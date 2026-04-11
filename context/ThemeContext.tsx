@@ -20,17 +20,17 @@ export interface ThemeColors {
 
 export const THEME_COLORS: Record<Theme, ThemeColors> = {
   dark: {
-    bg: '#0f1117',
-    card: '#1a1d27',
-    cardBorder: '#2a2d3e',
-    text: '#ffffff',
-    textMuted: '#9ca3af',
-    tabBg: '#13151f',
-    tabBorder: '#2a2d3e',
-    inputBg: '#0d0f17',
-    inputBorder: '#2a2d3e',
-    headerBg: '#13151f',
-    divider: '#2a2d3e',
+    bg: '#090c14',
+    card: '#111520',
+    cardBorder: '#1e2235',
+    text: '#f0f2f8',
+    textMuted: '#8891a8',
+    tabBg: '#0b0e18',
+    tabBorder: '#1e2235',
+    inputBg: '#090c14',
+    inputBorder: '#1e2235',
+    headerBg: '#0b0e18',
+    divider: '#1e2235',
   },
   light: {
     bg: '#FAF9F6',
